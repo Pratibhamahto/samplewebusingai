@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMIÈRE — Fine Jewellery</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8D49A;
+    --cream: #FAF7F2;
+    --dark: #1A1410;
+    --mid: #3D3025;
+    --text: #5C4D3A;
+    --border: rgba(201,168,76,0.25);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform .1s ease;
+  }
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: all .18s ease;
+    opacity: .6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 24px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 300; letter-spacing: 0.25em;
+    color: var(--dark);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text); text-decoration: none;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-actions { display: flex; gap: 22px; align-items: center; }
+  .nav-actions button {
+    background: none; border: none; cursor: none;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text);
+  }
+  .btn-cart {
+    background: var(--dark) !important;
+    color: var(--cream) !important;
+    padding: 10px 24px !important;
+    letter-spacing: 0.14em !important;
+    font-family: 'Montserrat', sans-serif !important;
+    transition: background .2s !important;
+  }
+  .btn-cart:hover { background: var(--gold) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+    overflow: hidden;
+  }
+  .hero-left {
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 80px 80px;
+    position: relative;
+  }
+  .hero-tag {
+    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 28px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .hero-tag::before {
+    content: ''; width: 40px; height: 1px; background: var(--gold);
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 6vw, 86px);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--dark);
+    margin-bottom: 28px;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: 13px; font-weight: 300; letter-spacing: 0.08em;
+    color: var(--text); line-height: 1.9;
+    max-width: 380px; margin-bottom: 50px;
+  }
+  .hero-cta { display: flex; gap: 20px; align-items: center; }
+  .btn-primary {
+    background: var(--dark); color: var(--cream);
+    padding: 16px 40px;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    border: none; cursor: none;
+    transition: background .2s, transform .2s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold); transform: translateY(-2px); }
+  .btn-ghost {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text); text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color .2s, border-color .2s;
+  }
+  .btn-ghost:hover { color: var(--gold); border-color: var(--gold); }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+    background: var(--mid);
+  }
+  .hero-img-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #2C1F10 0%, #4A3520 40%, #1A1410 100%);
+  }
+  .hero-ornament {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ornament-ring {
+    width: 380px; height: 380px; border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.2);
+    position: absolute; animation: slowRotate 30s linear infinite;
+  }
+  .ornament-ring:nth-child(2) {
+    width: 280px; height: 280px;
+    border-color: rgba(201,168,76,0.35);
+    animation-direction: reverse; animation-duration: 20s;
+  }
+  .ornament-ring:nth-child(3) {
+    width: 460px; height: 460px;
+    border-color: rgba(201,168,76,0.1);
+  }
+  @keyframes slowRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .diamond-icon {
+    width: 120px; height: 120px;
+    position: relative; z-index: 2;
+  }
+  .hero-badge {
+    position: absolute; bottom: 50px; left: 40px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid var(--border);
+    padding: 20px 28px;
+    backdrop-filter: blur(8px);
+  }
+  .hero-badge p { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-light); }
+  .hero-badge strong { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: #fff; display: block; margin-top: 4px; }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    background: var(--dark);
+    padding: 18px 0;
+    overflow: hidden;
+  }
+  .marquee {
+    display: flex; gap: 0;
+    animation: marquee 22s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee span {
+    font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--gold); padding: 0 40px;
+    flex-shrink: 0;
+  }
+  .marquee span.sep { color: rgba(201,168,76,0.3); }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* COLLECTIONS */
+  .section { padding: 100px 80px; }
+  .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; }
+  .section-label {
+    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::after { content: ''; flex: 1; max-width: 50px; height: 1px; background: var(--gold); }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 54px); font-weight: 300; line-height: 1.15;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .collection-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 340px 340px;
+    gap: 16px;
+  }
+  .col-card {
+    position: relative; overflow: hidden;
+    cursor: none;
+  }
+  .col-card:first-child { grid-row: 1 / 3; }
+  .col-card-bg {
+    position: absolute; inset: 0;
+    transition: transform .6s ease;
+  }
+  .col-card:hover .col-card-bg { transform: scale(1.04); }
+  .c1 { background: linear-gradient(160deg, #2A1E0E 0%, #4D3520 50%, #1F1510 100%); }
+  .c2 { background: linear-gradient(160deg, #1A2535 0%, #2A3D55 50%, #111C2A 100%); }
+  .c3 { background: linear-gradient(160deg, #1E2A1A 0%, #2D4025 50%, #121A10 100%); }
+  .c4 { background: linear-gradient(160deg, #2A1A1A 0%, #402525 50%, #1A1010 100%); }
+  .c5 { background: linear-gradient(160deg, #252520 0%, #383830 50%, #181815 100%); }
+
+  .col-card-gem {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -60%);
+    opacity: 0.55;
+    transition: opacity .4s, transform .4s;
+  }
+  .col-card:hover .col-card-gem { opacity: 0.85; transform: translate(-50%, -65%); }
+
+  .col-card-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 28px 30px;
+    background: linear-gradient(to top, rgba(10,6,2,0.85) 0%, transparent 100%);
+  }
+  .col-card-tag {
+    font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px;
+  }
+  .col-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 300; color: #fff;
+    margin-bottom: 4px;
+  }
+  .col-card:first-child .col-card-name { font-size: 36px; }
+  .col-card-price {
+    font-size: 12px; letter-spacing: 0.08em;
+    color: var(--gold-light);
+  }
+
+  /* FEATURED PRODUCTS */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+  .product-card {
+    cursor: none;
+  }
+  .product-img {
+    aspect-ratio: 3/4;
+    position: relative; overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .product-img-bg {
+    position: absolute; inset: 0;
+    transition: transform .5s ease;
+  }
+  .product-card:hover .product-img-bg { transform: scale(1.05); }
+  .product-img-bg.p1 { background: linear-gradient(145deg, #1C1810, #3A2E1A, #1C1810); }
+  .product-img-bg.p2 { background: linear-gradient(145deg, #181A1C, #2A303A, #181A1C); }
+  .product-img-bg.p3 { background: linear-gradient(145deg, #1C181C, #30203A, #1C181C); }
+  .product-img-bg.p4 { background: linear-gradient(145deg, #181C18, #20301E, #181C18); }
+
+  .product-gem-wrap {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .product-quick {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: var(--dark);
+    padding: 14px;
+    text-align: center;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold);
+    transform: translateY(100%);
+    transition: transform .3s ease;
+  }
+  .product-card:hover .product-quick { transform: translateY(0); }
+
+  .product-tag {
+    font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 6px;
+  }
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 300; color: var(--dark);
+    margin-bottom: 6px;
+  }
+  .product-price {
+    font-size: 13px; letter-spacing: 0.06em;
+    color: var(--text);
+  }
+  .product-price s { color: var(--gold-light); margin-right: 8px; opacity: .6; }
+
+  /* BANNER */
+  .banner {
+    background: var(--dark);
+    padding: 100px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .banner::before {
+    content: 'LUMIÈRE';
+    position: absolute;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 220px; font-weight: 300;
+    color: rgba(201,168,76,0.04);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.1em;
+  }
+  .banner-text { position: relative; z-index: 1; }
+  .banner-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+  .banner-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 4vw, 60px); font-weight: 300;
+    color: #fff; line-height: 1.1; margin-bottom: 24px;
+  }
+  .banner-title em { font-style: italic; color: var(--gold); }
+  .banner-desc { font-size: 13px; font-weight: 300; letter-spacing: 0.06em; color: rgba(255,255,255,0.5); line-height: 1.9; margin-bottom: 40px; }
+  .btn-gold {
+    background: var(--gold); color: var(--dark);
+    padding: 16px 40px;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    border: none; cursor: none;
+    display: inline-block; text-decoration: none;
+    transition: opacity .2s, transform .2s;
+  }
+  .btn-gold:hover { opacity: 0.88; transform: translateY(-2px); }
+
+  .banner-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; position: relative; z-index: 1;
+  }
+  .stat-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.12);
+    padding: 36px 30px;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px; font-weight: 300; color: var(--gold);
+    line-height: 1; margin-bottom: 10px;
+  }
+  .stat-label { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+  /* TESTIMONIALS */
+  .testimonials { background: #F5F0E8; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+  .testi-card {
+    background: var(--cream);
+    padding: 40px 36px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .testi-stars { color: var(--gold); font-size: 14px; letter-spacing: 4px; margin-bottom: 20px; }
+  .testi-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px; font-style: italic; font-weight: 300;
+    line-height: 1.6; color: var(--dark); margin-bottom: 28px;
+  }
+  .testi-author { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text); }
+  .testi-location { font-size: 10px; letter-spacing: 0.12em; color: var(--gold); margin-top: 4px; }
+
+  /* NEWSLETTER */
+  .newsletter {
+    padding: 100px 80px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .newsletter-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px); font-weight: 300; margin-bottom: 16px;
+  }
+  .newsletter-title em { font-style: italic; color: var(--gold); }
+  .newsletter-sub { font-size: 13px; color: var(--text); letter-spacing: 0.06em; margin-bottom: 44px; }
+  .newsletter-form {
+    display: flex; max-width: 500px; margin: 0 auto;
+    border: 1px solid var(--border);
+  }
+  .newsletter-form input {
+    flex: 1; padding: 16px 24px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px; letter-spacing: 0.08em;
+    border: none; background: transparent;
+    color: var(--dark); outline: none;
+  }
+  .newsletter-form input::placeholder { color: rgba(92,77,58,0.5); }
+  .newsletter-form button {
+    background: var(--dark); color: var(--cream);
+    padding: 16px 32px;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    border: none; cursor: none;
+    transition: background .2s;
+  }
+  .newsletter-form button:hover { background: var(--gold); }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    padding: 80px 80px 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px; margin-bottom: 60px;
+  }
+  .footer-brand-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 300; letter-spacing: 0.2em;
+    color: #fff; margin-bottom: 18px;
+  }
+  .footer-brand-logo span { color: var(--gold); }
+  .footer-desc { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.4); line-height: 1.8; max-width: 260px; }
+  .footer-heading { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 22px; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 12px; }
+  .footer-links a { font-size: 12px; color: rgba(255,255,255,0.45); text-decoration: none; letter-spacing: 0.06em; transition: color .2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 30px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy { font-size: 11px; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; }
+  .footer-social { display: flex; gap: 20px; }
+  .footer-social a { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.3); text-decoration: none; transition: color .2s; }
+  .footer-social a:hover { color: var(--gold); }
+
+  /* SVG gems */
+  .gem-svg { width: 100%; height: 100%; }
+
+  /* Animations */
+  .fade-up {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">LUMI<span>È</span>RE</a>
+  <ul class="nav-links">
+    <li><a href="#collections">Collections</a></li>
+    <li><a href="#products">Jewellery</a></li>
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#contact">Bespoke</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button>Search</button>
+    <button>Wishlist</button>
+    <button class="btn-cart">Cart (0)</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">New Collection 2025</div>
+    <h1 class="hero-title">Crafted for<br>the <em>Eternal</em><br>Moment</h1>
+    <p class="hero-sub">Each piece from Lumière is hand-finished by master artisans in Paris, using only conflict-free stones and ethically sourced metals.</p>
+    <div class="hero-cta">
+      <a href="#collections" class="btn-primary">Explore Collections</a>
+      <a href="#products" class="btn-ghost">View All Pieces</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-bg"></div>
+    <div class="hero-ornament">
+      <div class="ornament-ring"></div>
+      <div class="ornament-ring"></div>
+      <div class="ornament-ring"></div>
+      <svg class="diamond-icon" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="60,10 100,45 60,110 20,45" fill="none" stroke="#C9A84C" stroke-width="1"/>
+        <polygon points="60,10 100,45 60,60 20,45" fill="rgba(201,168,76,0.15)" stroke="#C9A84C" stroke-width="0.5"/>
+        <polygon points="60,60 100,45 60,110" fill="rgba(201,168,76,0.08)" stroke="#C9A84C" stroke-width="0.5"/>
+        <polygon points="60,60 20,45 60,110" fill="rgba(201,168,76,0.12)" stroke="#C9A84C" stroke-width="0.5"/>
+        <line x1="60" y1="10" x2="60" y2="110" stroke="rgba(201,168,76,0.3)" stroke-width="0.5"/>
+        <line x1="20" y1="45" x2="100" y2="45" stroke="rgba(201,168,76,0.3)" stroke-width="0.5"/>
+      </svg>
+    </div>
+    <div class="hero-badge">
+      <p>Certified pieces</p>
+      <strong>2,400+</strong>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span>Fine Jewellery</span><span class="sep">◆</span>
+    <span>Handcrafted in Paris</span><span class="sep">◆</span>
+    <span>Ethically Sourced</span><span class="sep">◆</span>
+    <span>Lifetime Warranty</span><span class="sep">◆</span>
+    <span>Bespoke Commissions</span><span class="sep">◆</span>
+    <span>GIA Certified Diamonds</span><span class="sep">◆</span>
+    <span>Free Engraving</span><span class="sep">◆</span>
+    <span>Fine Jewellery</span><span class="sep">◆</span>
+    <span>Handcrafted in Paris</span><span class="sep">◆</span>
+    <span>Ethically Sourced</span><span class="sep">◆</span>
+    <span>Lifetime Warranty</span><span class="sep">◆</span>
+    <span>Bespoke Commissions</span><span class="sep">◆</span>
+    <span>GIA Certified Diamonds</span><span class="sep">◆</span>
+    <span>Free Engraving</span><span class="sep">◆</span>
+  </div>
+</div>
+
+<!-- COLLECTIONS -->
+<section class="section" id="collections">
+  <div class="section-header fade-up">
+    <div>
+      <div class="section-label">Curated</div>
+      <h2 class="section-title">Our <em>Collections</em></h2>
+    </div>
+    <a href="#" class="btn-ghost">View all collections</a>
+  </div>
+  <div class="collection-grid fade-up">
+    <!-- Large card -->
+    <div class="col-card">
+      <div class="col-card-bg c1"></div>
+      <div class="col-card-gem">
+        <svg width="160" height="180" viewBox="0 0 160 180" fill="none">
+          <polygon points="80,20 140,70 80,160 20,70" fill="rgba(201,168,76,0.12)" stroke="#C9A84C" stroke-width="1.2"/>
+          <polygon points="80,20 140,70 80,90 20,70" fill="rgba(201,168,76,0.2)" stroke="#C9A84C" stroke-width="0.8"/>
+          <line x1="80" y1="20" x2="80" y2="160" stroke="rgba(201,168,76,0.25)" stroke-width="0.5"/>
+          <line x1="20" y1="70" x2="140" y2="70" stroke="rgba(201,168,76,0.25)" stroke-width="0.5"/>
+          <circle cx="80" cy="20" r="3" fill="#C9A84C"/>
+        </svg>
+      </div>
+      <div class="col-card-content">
+        <div class="col-card-tag">Signature</div>
+        <div class="col-card-name">Solitaire<br>Diamond</div>
+        <div class="col-card-price">From ₹85,000</div>
+      </div>
+    </div>
+    <!-- Small cards -->
+    <div class="col-card">
+      <div class="col-card-bg c2"></div>
+      <div class="col-card-gem" style="transform:translate(-50%,-55%);opacity:.5">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+          <circle cx="40" cy="40" r="32" fill="rgba(100,160,255,0.1)" stroke="rgba(100,160,255,0.6)" stroke-width="1"/>
+          <circle cx="40" cy="40" r="20" fill="rgba(100,160,255,0.08)" stroke="rgba(100,160,255,0.4)" stroke-width="0.5"/>
+          <line x1="8" y1="40" x2="72" y2="40" stroke="rgba(100,160,255,0.3)" stroke-width="0.5"/>
+          <line x1="40" y1="8" x2="40" y2="72" stroke="rgba(100,160,255,0.3)" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <div class="col-card-content">
+        <div class="col-card-tag">Sapphire</div>
+        <div class="col-card-name">Blue Bloom</div>
+        <div class="col-card-price">From ₹48,000</div>
+      </div>
+    </div>
+    <div class="col-card">
+      <div class="col-card-bg c3"></div>
+      <div class="col-card-gem" style="transform:translate(-50%,-55%);opacity:.5">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+          <polygon points="40,8 72,30 72,50 40,72 8,50 8,30" fill="rgba(80,200,100,0.1)" stroke="rgba(80,200,100,0.6)" stroke-width="1"/>
+          <polygon points="40,8 72,30 40,40 8,30" fill="rgba(80,200,100,0.15)" stroke="rgba(80,200,100,0.3)" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <div class="col-card-content">
+        <div class="col-card-tag">Emerald</div>
+        <div class="col-card-name">Verdant</div>
+        <div class="col-card-price">From ₹62,000</div>
+      </div>
+    </div>
+    <div class="col-card">
+      <div class="col-card-bg c4"></div>
+      <div class="col-card-gem" style="transform:translate(-50%,-55%);opacity:.5">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+          <ellipse cx="40" cy="40" rx="28" ry="18" fill="rgba(220,80,80,0.1)" stroke="rgba(220,80,80,0.6)" stroke-width="1"/>
+          <line x1="12" y1="40" x2="68" y2="40" stroke="rgba(220,80,80,0.3)" stroke-width="0.5"/>
+          <ellipse cx="40" cy="40" rx="10" ry="6" fill="rgba(220,80,80,0.15)" stroke="rgba(220,80,80,0.4)" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <div class="col-card-content">
+        <div class="col-card-tag">Ruby</div>
+        <div class="col-card-name">Rouge Royale</div>
+        <div class="col-card-price">From ₹55,000</div>
+      </div>
+    </div>
+    <div class="col-card">
+      <div class="col-card-bg c5"></div>
+      <div class="col-card-gem" style="transform:translate(-50%,-55%);opacity:.5">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+          <rect x="24" y="24" width="32" height="32" fill="rgba(201,168,76,0.1)" stroke="rgba(201,168,76,0.6)" stroke-width="1" transform="rotate(45 40 40)"/>
+          <rect x="32" y="32" width="16" height="16" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.4)" stroke-width="0.5" transform="rotate(45 40 40)"/>
+        </svg>
+      </div>
+      <div class="col-card-content">
+        <div class="col-card-tag">Gold</div>
+        <div class="col-card-name">18k Bands</div>
+        <div class="col-card-price">From ₹32,000</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section" id="products" style="background:#F5F0E8;">
+  <div class="section-header fade-up">
+    <div>
+      <div class="section-label">Featured</div>
+      <h2 class="section-title">New <em>Arrivals</em></h2>
+    </div>
+    <a href="#" class="btn-ghost">Shop all</a>
+  </div>
+  <div class="products-grid fade-up">
+
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-img-bg p1"></div>
+        <div class="product-gem-wrap">
+          <svg width="90" height="100" viewBox="0 0 90 100" fill="none">
+            <polygon points="45,8 80,36 45,92 10,36" fill="rgba(201,168,76,0.15)" stroke="#C9A84C" stroke-width="1"/>
+            <polygon points="45,8 80,36 45,55 10,36" fill="rgba(201,168,76,0.25)" stroke="#C9A84C" stroke-width="0.7"/>
+            <circle cx="45" cy="8" r="2.5" fill="#C9A84C"/>
+          </svg>
+        </div>
+        <div class="product-quick">Quick View</div>
+      </div>
+      <div class="product-tag">Rings</div>
+      <div class="product-name">Éclat Solitaire</div>
+      <div class="product-price"><s>₹1,20,000</s> ₹95,000</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-img-bg p2"></div>
+        <div class="product-gem-wrap">
+          <svg width="90" height="100" viewBox="0 0 90 100" fill="none">
+            <ellipse cx="45" cy="48" rx="30" ry="38" fill="rgba(120,160,255,0.1)" stroke="rgba(120,160,255,0.7)" stroke-width="1"/>
+            <ellipse cx="45" cy="48" rx="18" ry="24" fill="rgba(120,160,255,0.15)" stroke="rgba(120,160,255,0.5)" stroke-width="0.5"/>
+            <line x1="15" y1="48" x2="75" y2="48" stroke="rgba(120,160,255,0.25)" stroke-width="0.5"/>
+            <line x1="45" y1="10" x2="45" y2="86" stroke="rgba(120,160,255,0.25)" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="product-quick">Quick View</div>
+      </div>
+      <div class="product-tag">Earrings</div>
+      <div class="product-name">Ciel Drop</div>
+      <div class="product-price">₹72,000</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-img-bg p3"></div>
+        <div class="product-gem-wrap">
+          <svg width="90" height="100" viewBox="0 0 90 100" fill="none">
+            <polygon points="45,10 72,28 72,58 45,90 18,58 18,28" fill="rgba(180,100,220,0.1)" stroke="rgba(180,100,220,0.7)" stroke-width="1"/>
+            <polygon points="45,10 72,28 45,50 18,28" fill="rgba(180,100,220,0.2)" stroke="rgba(180,100,220,0.4)" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="product-quick">Quick View</div>
+      </div>
+      <div class="product-tag">Necklace</div>
+      <div class="product-name">Violette Pendant</div>
+      <div class="product-price">₹88,000</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-img-bg p4"></div>
+        <div class="product-gem-wrap">
+          <svg width="90" height="100" viewBox="0 0 90 100" fill="none">
+            <rect x="22" y="28" width="46" height="46" rx="4" fill="rgba(100,200,120,0.1)" stroke="rgba(100,200,120,0.7)" stroke-width="1" transform="rotate(10 45 50)"/>
+            <rect x="30" y="36" width="30" height="30" rx="2" fill="rgba(100,200,120,0.15)" stroke="rgba(100,200,120,0.4)" stroke-width="0.5" transform="rotate(10 45 50)"/>
+          </svg>
+        </div>
+        <div class="product-quick">Quick View</div>
+      </div>
+      <div class="product-tag">Bracelet</div>
+      <div class="product-name">Jardin Bangle</div>
+      <div class="product-price">₹64,000</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BANNER -->
+<section class="banner" id="about">
+  <div class="banner-text fade-up">
+    <div class="banner-label">Our Promise</div>
+    <h2 class="banner-title">Over a Century of<br><em>Artisan Mastery</em></h2>
+    <p class="banner-desc">Founded in 1902, Lumière has built its legacy on an unwavering commitment to craftsmanship. Every ring, necklace, and bracelet we create is the product of generations of knowledge passed down in our Parisian ateliers.</p>
+    <a href="#" class="btn-gold">Discover our story</a>
+  </div>
+  <div class="banner-stats fade-up">
+    <div class="stat-box">
+      <div class="stat-num">120+</div>
+      <div class="stat-label">Years of Heritage</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">48</div>
+      <div class="stat-label">Master Artisans</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">12k+</div>
+      <div class="stat-label">Pieces Created</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Ethically Sourced</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials">
+  <div class="section-header fade-up">
+    <div>
+      <div class="section-label">Testimonials</div>
+      <h2 class="section-title">Words from our<br><em>Clients</em></h2>
+    </div>
+  </div>
+  <div class="testimonials-grid fade-up">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"The ring was beyond anything I had imagined. When she saw it, she cried. Lumière doesn't just sell jewellery — they craft memories."</p>
+      <div class="testi-author">Arjun Mehta</div>
+      <div class="testi-location">Mumbai, India</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"The bespoke process was seamless. They listened to every detail and translated my vision into a piece I will wear every day for the rest of my life."</p>
+      <div class="testi-author">Priya Sharma</div>
+      <div class="testi-location">Delhi, India</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"I've purchased from many fine jewellers, but Lumière's quality of finish and ethical sourcing makes them truly extraordinary. Worth every rupee."</p>
+      <div class="testi-author">Kavya Reddy</div>
+      <div class="testi-location">Hyderabad, India</div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="section-label" style="justify-content:center;margin-bottom:16px">Exclusive Access</div>
+  <h2 class="newsletter-title">Join the <em>Inner Circle</em></h2>
+  <p class="newsletter-sub">Be the first to preview new collections, private sales, and invitations to our atelier events.</p>
+  <form class="newsletter-form" onsubmit="return false">
+    <input type="email" placeholder="Your email address">
+    <button type="submit">Subscribe</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-logo">LUMI<span>È</span>RE</div>
+      <p class="footer-desc">Fine jewellery crafted with intention. Every piece is a testament to the art of the possible, shaped by masters who honour the old ways.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Jewellery</div>
+      <ul class="footer-links">
+        <li><a href="#">Rings</a></li>
+        <li><a href="#">Necklaces</a></li>
+        <li><a href="#">Earrings</a></li>
+        <li><a href="#">Bracelets</a></li>
+        <li><a href="#">Bespoke</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Company</div>
+      <ul class="footer-links">
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">Artisans</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Support</div>
+      <ul class="footer-links">
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Sizing Guide</a></li>
+        <li><a href="#">Care & Repair</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 Lumière Fine Jewellery. All rights reserved.</p>
+    <div class="footer-social">
+      <a href="#">Instagram</a>
+      <a href="#">Pinterest</a>
+      <a href="#">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+
+  // Scroll animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
